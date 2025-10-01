@@ -13,9 +13,7 @@ import path from "path";
  *  na primeira linha (linha de cabeçalho) da planilha, ou a letra da coluna
  *  Exemplo: "Estoque Atual", "Preço", "A" ou "D"
  * 
- * @param {string} paginaPlanilha - Nome da página da planilha que serão filtrados os valores, afinal uma planilha pode ter várias páginas.
- *  Fallback: Caso não seja enviado nada, o resultado será utilizar a primeira página da planilha
- * 
+ *
  * @param {string} filtro - Expressão de filtro aplicada aos valores da coluna.
  *   Pode ser uma comparação simples ou composta:
  *   - "=10" → apenas valores iguais a 10.
@@ -25,6 +23,10 @@ import path from "path";
  * @returns {Array<object>} - Lista de objetos representando
  *  as linhas que passaram no filtro
  */
+
+// ! [REMOVIDO]
+// * @param {string} paginaPlanilha - Nome da página da planilha que serão filtrados os valores, afinal uma planilha pode ter várias páginas.
+// *  Fallback: Caso não seja enviado nada, o resultado será utilizar a primeira página da planilha
 
 export function filtrarPlanilha(filePath, coluna, filtro, opts = {}) {
     const abs = path.resolve(filePath);

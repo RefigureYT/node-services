@@ -19,7 +19,7 @@ export async function getAccessToken(empresa) {
 
     if (listaEmpresaRecebida) {
         if (listaEmpresaRecebida.accessToken !== null) {
-            console.log('[SessionService] Retornando token do cache em memória.');
+            // console.log('[SessionService] Retornando token do cache em memória.');
             return listaEmpresaRecebida.accessToken;
         } else {
             console.log('[SessionService] Token não encontrado em cache. Buscando um novo...');
