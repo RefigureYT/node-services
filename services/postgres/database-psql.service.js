@@ -18,30 +18,29 @@ const pool = new Pool(poolConfig);
 
 // 2. ADICIONAMOS O "OUVINTE" DE EVENTOS
 // Isso vai nos dizer o que está acontecendo por baixo dos panos.
-pool.on('error', (err, client) => {
-    // console.error('❌ ERRO INESPERADO no cliente do banco de dados!', err);
-    // process.exit(-1); // Em caso de erro grave, encerra a aplicação.
-});
+// pool.on('error', (err, client) => {
+//     console.error('❌ ERRO INESPERADO no cliente do banco de dados!', err);
+//     process.exit(-1); // Em caso de erro grave, encerra a aplicação.
+// });
 
-pool.on('connect', (client) => {
-    // console.log('ℹ️ EVENTO: Um cliente se conectou ao banco de dados.');
-    // // Podemos até ver de onde ele está se conectando
-    // console.log(`   - Processo ID do cliente: ${client.processID}`);
-});
+// pool.on('connect', (client) => {
+//     console.log('ℹ️ EVENTO: Um cliente se conectou ao banco de dados.');
+//     // Podemos até ver de onde ele está se conectando
+//     console.log(`   - Processo ID do cliente: ${client.processID}`);
+// });
 
-pool.on('acquire', (client) => {
-    // console.log('ℹ️ EVENTO: Uma conexão foi "adquirida" do pool e está pronta para uso.');
-});
+// pool.on('acquire', (client) => {
+//     console.log('ℹ️ EVENTO: Uma conexão foi "adquirida" do pool e está pronta para uso.');
+// });
 
-pool.on('remove', (client) => {
-    // console.log('ℹ️ EVENTO: Uma conexão foi "removida" e devolvida ao pool.');
-});
+// pool.on('remove', (client) => {
+//     console.log('ℹ️ EVENTO: Uma conexão foi "removida" e devolvida ao pool.');
+// });
 
 /**
  * @description Testa a conexão com o banco de dados usando variáveis de ambiente.
  * @returns {Promise<boolean>} Retorna true se a conexão for bem-sucedida, caso contrário, lança um erro.
  */
-
 export async function conectarAoBanco() {
     const hostBanco = process.env.DB_HOST;
     const user = process.env.DB_USER;
@@ -72,7 +71,6 @@ export async function conectarAoBanco() {
  * @param {Array} params - Uma array com os valores para substituir $1, $2, etc.
  * @returns {Promise<Array>} Um array com as linhas retornadas pela query.
  */
-
 export async function executarQueryInDb(sqlCommand, params = []) {
     let client;
     try {
@@ -92,4 +90,41 @@ export async function executarQueryInDb(sqlCommand, params = []) {
             // console.log('Conexão devolvida ao pool.');
         }
     }
+}
+
+/** @typedef {{ schema: string, owner: string }} SchemaInfo */
+
+/**
+ * @description Lista todos os schemas
+ * @returns {Promise<SchemaInfo[]>} Retorna um Array com todos os schemas que o usuário definido nas variáveis do ambiente tem acesso.
+ */
+export async function listSchemas() {
+    const q = `
+    -- \dn  (lista schemas e dono)
+    SELECT n.nspname AS schema,
+        pg_get_userbyid(n.nspowner) AS owner
+    FROM pg_namespace n
+    ORDER BY 1;
+    `;
+    const schemas = await executarQueryInDb(q);
+    return schemas;
+}
+
+/** @typedef {{ tablename: string }} TableInfo */
+
+/**
+ * @description Esta função lista todas as tables de um schema específico.
+ * @param {string} schema - Este é o nome do schema cujo será buscado as tables de dentro.
+ * @returns {Promise<TableInfo[]>} Retorna um Array com todas as tables do schema especificado.
+ */
+export async function listTablesBySchema(schema) {
+    const q = `
+        SELECT tablename
+        FROM pg_catalog.pg_tables
+        WHERE schemaname = '${schema}'
+        ORDER BY tablename;
+    `;
+
+    const tables = await executarQueryInDb(q);
+    return tables;
 }

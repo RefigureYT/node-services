@@ -1,0 +1,31 @@
+{
+  "name": "services",
+  "version": "1.0.0",
+  "description": "Coleção de serviços Node.js reutilizáveis para banco de dados, sessões, planilhas e integrações externas",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "doc": "docs",
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RefigureYT/node-services.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RefigureYT/node-services/issues"
+  },
+  "homepage": "https://github.com/RefigureYT/node-services#readme",
+  "dependencies": {
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "libphonenumber-js": "^1.12.24",
+    "pg": "^8.16.3"
+  }
+}
